@@ -1,24 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script>
-(function(){
-  try{
-    var path = window.location.pathname || "";
-    // evita loop: se já está na rota /w, não faz nada
-    if(/\/w\/?$/.test(path)) return;
-    var params = new URLSearchParams(window.location.search);
-    var hasCampaign = params.get("utm_campaign");
-    // detecta dispositivo móvel
-    var ua = navigator.userAgent || navigator.vendor || window.opera || "";
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Silk/i.test(ua);
-    // regra: só passa quem for mobile E tiver utm_campaign; caso contrário vai para /w preservando parâmetros
-    if(!hasCampaign || !isMobile){
-      window.location.replace("/w/" + (window.location.search || ""));
-    }
-  }catch(e){}
-})();
-</script>
 <!-- Meta Pixel Code -->
 <script>
   !function(f,b,e,v,n,t,s)
