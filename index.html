@@ -346,8 +346,10 @@ footer .fnote{opacity:.7;font-size:.82rem;margin-top:8px;max-width:560px;margin-
 .purchase-notif .pn-line{color:var(--green)}
 .purchase-notif .pn-line .pn-kit{font-weight:700}
 .purchase-notif .pn-line .pn-time{color:var(--text-soft)}
-@media(max-width:480px){.purchase-notif{min-width:0;max-width:calc(100vw - 24px);padding:10px 13px;gap:10px}.purchase-notif .pn-text{font-size:.8rem}.purchase-notif .pn-icon{height:34px;width:34px}.notif-stack{top:12px;right:12px}}
 @media(prefers-reduced-motion:reduce){.purchase-notif{transition:opacity .3s ease;transform:none}}
+
+/* Tablet */
+@media(max-width:1024px){
   .container{padding:0 24px}
   .section{padding:70px 0}
   .benefits-grid{grid-template-columns:repeat(2,1fr)}
@@ -374,10 +376,19 @@ footer .fnote{opacity:.7;font-size:.82rem;margin-top:8px;max-width:560px;margin-
   .plan.premium{transform:none}
   .guarantee-card{padding:28px}
   .btn{max-width:100%}
+  .carousel-img{height:280px}
+  .hero-mockup{max-width:100%}
+  .process-img-wrapper{max-width:100%}
+  .purchase-notif{min-width:0;max-width:calc(100vw - 24px);padding:10px 13px;gap:10px}
+  .purchase-notif .pn-text{font-size:.8rem}
+  .purchase-notif .pn-icon{height:34px;width:34px}
+  .notif-stack{top:12px;right:12px;max-width:calc(100vw - 24px)}
 }
 @media(max-width:420px){
   .hero h1{font-size:1.85rem}
   .plan-price{font-size:2.6rem}
+  .carousel-img{height:230px}
+  .section-title{font-size:1.5rem}
 }
 </style>
 </head>
