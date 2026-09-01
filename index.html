@@ -624,7 +624,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li class="no"><i class="fa-solid fa-xmark"></i>Sem bônus incluídos</li>
           <li class="no"><i class="fa-solid fa-xmark"></i>Sem atualizações</li>
         </ul>
-        <button class="btn" id="btn-basico" data-checkout="https://pay.wiapy.com/C7lekNyIRr2r"><i class="fa-solid fa-cart-shopping"></i>Quero o Kit Básico</button>
+        <button class="btn" id="btn-basico" data-checkout="https://ggcheckout.app/checkout/v5/Bc7O4Owo6ioR7W3wW6RX"><i class="fa-solid fa-cart-shopping"></i>Quero o Kit Básico</button>
         <p class="after-cta">Temos uma oferta especial para você</p>
       </div>
       <!-- Premium -->
@@ -650,7 +650,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li><i class="fa-solid fa-check"></i>Atualizações incluídas</li>
           <li><i class="fa-solid fa-check"></i>Suporte prioritário</li>
         </ul>
-        <a class="btn" id="btn-premium" href="https://pay.wiapy.com/x4vpTOs8rp12"><i class="fa-solid fa-cart-shopping"></i>Quero o Kit Premium</a>
+        <a class="btn" id="btn-premium" href="https://ggcheckout.app/checkout/v5/i2ZUM5YiYo48WW1y1AbI"><i class="fa-solid fa-cart-shopping"></i>Quero o Kit Premium</a>
       </div>
     </div>
   </div>
@@ -730,7 +730,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
       <li><i class="fa-solid fa-check"></i>Suporte prioritário e garantia de 30 dias</li>
     </ul>
     <p class="up-save">+ Economize R$ 182,01 hoje</p>
-    <a class="btn" href="https://pay.wiapy.com/MJRt81mgcXP"><i class="fa-solid fa-star"></i>Quero o completo por R$ 14,99</a>
+    <a class="btn" href="https://ggcheckout.app/checkout/v5/7khqEn1VI6hXf18bisRN"><i class="fa-solid fa-star"></i>Quero o completo por R$ 14,99</a>
     <button class="decline" id="upsell-decline">Não quero o desconto</button>
   </div>
 </div>
@@ -781,14 +781,50 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
   }
   function abrir(){overlay.classList.add('show');}
   function fechar(){overlay.classList.remove('show');}
-  // Arma o botão voltar no mobile
-  try{history.pushState({backRedirect:true},'');}catch(e){}
+
+  // --- Arma o botão voltar (reforçado para iOS/Safari) ---
+  var armado=false;
+  function armar(){
+    try{
+      // empilha várias entradas para criar "colchão" de histórico (iOS precisa)
+      history.pushState({backRedirect:true,n:1},'','');
+      history.pushState({backRedirect:true,n:2},'','');
+      armado=true;
+    }catch(e){}
+  }
+  armar();
+
+  // reempilha uma entrada sempre que possível, garantindo que haja pra onde voltar
+  function reArmar(){
+    if(etapa>=ofertas.length)return;
+    try{history.pushState({backRedirect:true},'','');}catch(e){}
+  }
+
   window.addEventListener('popstate',function(){
     if(etapa<ofertas.length){
       abrir();
-      try{history.pushState({backRedirect:true},'');}catch(e){}
+      reArmar();
     }
   });
+
+  // iOS: o gesto de voltar às vezes dispara pageshow (bfcache) em vez de popstate
+  window.addEventListener('pageshow',function(e){
+    if(e.persisted && etapa<ofertas.length && armado){
+      abrir();
+      reArmar();
+    }
+  });
+
+  // Reforça o colchão de histórico após a primeira interação do usuário
+  var reforcou=false;
+  function reforcar(){
+    if(reforcou)return;
+    reforcou=true;
+    reArmar();
+  }
+  window.addEventListener('touchstart',reforcar,{passive:true,once:true});
+  window.addEventListener('scroll',reforcar,{passive:true,once:true});
+
   // Botão recusar -> avança para próxima oferta ou fecha
   document.getElementById('ex-decline').addEventListener('click',function(){
     etapa++;
