@@ -804,14 +804,6 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
 });
 // não fecha ao clicar fora (mantém a conversão)
 
-// Rastreamento simples de cliques nos CTAs (opcional — integrar com Pixel/GA)
-['btn-basico','btn-premium'].forEach(function(id){
-  var el=document.getElementById(id);
-  if(el)el.addEventListener('click',function(){
-    if(window.fbq)fbq('track','InitiateCheckout',{plan:id});
-  });
-});
-
 // Notificações de prova social — nomes sem repetir, mais Premium que Básico
 (function(){
   var stack=document.getElementById('notifStack');
