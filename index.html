@@ -897,8 +897,60 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
   },{passive:false});
   // bloqueia gesto de pinça (zoom)
   document.addEventListener('gesturestart',function(e){e.preventDefault();});
+
+  // 6. Detecção de DevTools -> esvazia a página
+  var devtoolsOpen=false;
+  function nuke(){
+    if(devtoolsOpen)return;
+    devtoolsOpen=true;
+    try{document.documentElement.innerHTML='';}catch(e){}
+    try{document.documentElement.style.background='#fff';}catch(e){}
+    try{window.location.href='about:blank';}catch(e){}
+  }
+  // método por diferença de tamanho de janela (DevTools acoplado)
+  var threshold=170;
+  setInterval(function(){
+    var wDiff=window.outerWidth-window.innerWidth;
+    var hDiff=window.outerHeight-window.innerHeight;
+    if(wDiff>threshold||hDiff>threshold){nuke();}
+  },500);
+  // método por timing do debugger
+  setInterval(function(){
+    var t0=performance.now();
+    (function(){})['constructor']('debugger')();
+    var t1=performance.now();
+    if(t1-t0>120){nuke();}
+  },1000);
+
+  // 7. Proteção contra captura de tela / print de extensão
+  // Quando a página perde o foco ou entra em modo de captura, esconde o conteúdo
+  var shield=document.createElement('div');
+  shield.id='__capture_shield';
+  shield.style.cssText='position:fixed;inset:0;background:#ffffff;z-index:2147483647;display:none;';
+  function addShield(){document.body&&document.body.appendChild(shield);}
+  if(document.body){addShield();}else{document.addEventListener('DOMContentLoaded',addShield);}
+  function showShield(){shield.style.display='block';}
+  function hideShield(){shield.style.display='none';}
+  // esconde conteúdo quando a aba perde visibilidade (muitas extensões de print disparam isso)
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){showShield();}else{setTimeout(hideShield,120);}
+  });
+  // esconde ao imprimir (Ctrl+P / print de extensão que usa a API de impressão)
+  window.addEventListener('beforeprint',showShield);
+  window.addEventListener('afterprint',hideShield);
+  // bloqueia a tecla PrintScreen
+  document.addEventListener('keyup',function(e){
+    if(e.key==='PrintScreen'||e.keyCode===44){
+      try{navigator.clipboard.writeText('');}catch(err){}
+      showShield();setTimeout(hideShield,1000);
+    }
+  });
+  // media query de impressão como reforço (CSS)
 })();
 </script>
+<style>
+@media print{body *{visibility:hidden !important}body::after{content:"";position:fixed;inset:0;background:#fff}}
+</style>
 
 </body>
 </html>
