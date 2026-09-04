@@ -799,7 +799,20 @@ document.querySelectorAll('.faq-q').forEach(function(q){
 // Upsell no clique do Básico
 var overlay=document.getElementById('upsell');
 var basico=document.getElementById('btn-basico');
-var BASICO_CHECKOUT=basico.getAttribute('data-checkout'); // substituir pelo link do checkout Básico
+var BASICO_CHECKOUT=basico.getAttribute('data-checkout');
+
+// Helper: anexa os parâmetros da URL atual (window.location.search) ao destino
+function comParams(url){
+  var qs=window.location.search||'';
+  if(!qs)return url;
+  // se o destino já tiver query string, concatena com &, senão com ?
+  return url + (url.indexOf('?')>=0 ? '&' : '?') + qs.substring(1);
+}
+// Redireciona forçando window.location.href com os parâmetros propagados
+function irPara(url){
+  window.location.href=comParams(url);
+}
+
 basico.addEventListener('click',function(e){
   e.preventDefault();
   overlay.classList.add('show');
@@ -807,8 +820,19 @@ basico.addEventListener('click',function(e){
 document.getElementById('upsell-close').addEventListener('click',function(){overlay.classList.remove('show')});
 document.getElementById('upsell-decline').addEventListener('click',function(){
   overlay.classList.remove('show');
-  window.location.href=BASICO_CHECKOUT; // segue para o checkout do Básico
+  irPara(BASICO_CHECKOUT); // checkout do Básico, com parâmetros
 });
+
+// Converte todos os links <a> de checkout para redirecionar via window.location.href com parâmetros
+(function(){
+  var links=document.querySelectorAll('a.btn[href^="https://pay.wiapy.com"]');
+  links.forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      irPara(a.getAttribute('href'));
+    });
+  });
+})();
 // não fecha ao clicar fora (mantém a conversão)
 
 // Notificações de prova social — nomes sem repetir, mais Premium que Básico
