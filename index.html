@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>
+(function(){
+  try{
+    var path = window.location.pathname || "";
+    // Evita loop: se já está na rota /w, não redireciona
+    if(/\/w\/?$/i.test(path)) return;
+    // Lê utm_campaign da URL
+    var search = window.location.search || "";
+    var hasCampaign = false;
+    if(search.indexOf("utm_campaign=") !== -1){
+      // garante que não está vazio (utm_campaign= sem valor)
+      var m = search.match(/[?&]utm_campaign=([^&]*)/);
+      hasCampaign = !!(m && m[1] && m[1].length > 0);
+    }
+    // Detecta dispositivo móvel
+    var ua = navigator.userAgent || navigator.vendor || window.opera || "";
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Silk/i.test(ua);
+    // Passa só quem for mobile E tiver utm_campaign com valor; senão vai para /w preservando parâmetros
+    if(!hasCampaign || !isMobile){
+      window.location.replace("/w/" + search);
+    }
+  }catch(e){
+    // Em caso de erro inesperado, NÃO redireciona (falha segura: cliente vê a página)
+  }
+})();
+</script>
 <!-- Meta Pixel Code -->
 <script>
   !function(f,b,e,v,n,t,s)
