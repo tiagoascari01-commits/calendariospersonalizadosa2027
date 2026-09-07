@@ -176,19 +176,19 @@ img{max-width:100%;display:block}
 .carousel-section-two{margin-top:0}
 .hcarousel{position:relative;width:100%;overflow:hidden;transform:translateZ(0);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .carousel-track{display:flex;width:max-content;gap:16px;will-change:transform}
-.carousel-one .carousel-track,.carousel-two .carousel-track{animation-play-state:running !important}
+.carousel-one .carousel-track,.carousel-two .carousel-track{animation:none}
 .carousel-group{display:flex;gap:16px;flex:0 0 auto}
 .carousel-item{flex:0 0 auto}
 .carousel-img{display:block;height:380px;width:auto;border-radius:16px;box-shadow:0 10px 28px rgba(65,40,24,.10);background:var(--surface);transform:translateZ(0)}
 /* Carrossel 1: rola para a esquerda; Carrossel 2: rola para a direita (sentidos opostos) */
-.carousel-one .carousel-track{animation:carousel-scroll-left 45s linear infinite}
-.carousel-two .carousel-track{animation:carousel-scroll-right 45s linear infinite}
+.carousel-one .carousel-track{will-change:transform}
+.carousel-two .carousel-track{will-change:transform}
 .carousel-one .carousel-track:hover,
 .carousel-two .carousel-track:hover{animation-play-state:paused}
 @keyframes carousel-scroll-left{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 8px))}}
 @keyframes carousel-scroll-right{from{transform:translateX(calc(-50% - 8px))}to{transform:translateX(0)}}
 @media(max-width:1024px){.carousel-section-one{margin-bottom:18px}}
-@media(max-width:768px){.carousel-img{height:300px}.carousel-section-one{margin-bottom:16px}.carousel-one .carousel-track{animation-duration:12s}.carousel-two .carousel-track{animation-duration:12s}}
+@media(max-width:768px){.carousel-img{height:300px}.carousel-section-one{margin-bottom:16px}}
 @media(max-width:600px){.carousel-img{height:240px}.carousel-section-one{margin-bottom:14px}}
 @media(max-width:430px){.carousel-img{height:210px}}
 @media(max-width:375px){.carousel-img{height:190px}}
@@ -967,6 +967,58 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
       showShield();setTimeout(hideShield,1000);
     }
   });
+})();
+
+// Animação dos carrosséis via requestAnimationFrame (resolve travamento no mobile)
+(function(){
+  function animarCarrossel(trackSelector, direcao, velocidadeDesktop, velocidadeMobile){
+    var track=document.querySelector(trackSelector);
+    if(!track)return;
+    var pos=0;
+    var pausado=false;
+    // metade da largura total (porque o conteúdo é duplicado para loop)
+    function getMetade(){ return track.scrollWidth/2; }
+    // velocidade em pixels por segundo (ajusta por tela)
+    function getVel(){
+      var isMobile=window.innerWidth<=768;
+      return isMobile?velocidadeMobile:velocidadeDesktop;
+    }
+    // se for direção 'right', começa deslocado
+    if(direcao==='right'){ pos=getMetade(); }
+    var ultimo=null;
+    function frame(t){
+      if(ultimo==null)ultimo=t;
+      var dt=(t-ultimo)/1000; // segundos desde último frame
+      ultimo=t;
+      if(!pausado){
+        var metade=getMetade();
+        var vel=getVel();
+        if(direcao==='left'){
+          pos-=vel*dt;
+          if(pos<=-metade)pos+=metade;
+        }else{
+          pos+=vel*dt;
+          if(pos>=metade)pos-=metade;
+        }
+        track.style.transform='translateX('+pos+'px)';
+      }
+      requestAnimationFrame(frame);
+    }
+    // pausar ao tocar/passar mouse
+    track.addEventListener('mouseenter',function(){pausado=true;});
+    track.addEventListener('mouseleave',function(){pausado=false;});
+    track.addEventListener('touchstart',function(){pausado=true;},{passive:true});
+    track.addEventListener('touchend',function(){pausado=false;},{passive:true});
+    requestAnimationFrame(frame);
+  }
+  // inicia após o carregamento para ter as larguras corretas
+  function iniciar(){
+    // velocidades em pixels/segundo: (desktop, mobile)
+    animarCarrossel('.carousel-one .carousel-track','left',55,75);
+    animarCarrossel('.carousel-two .carousel-track','right',55,75);
+  }
+  if(document.readyState==='complete'){iniciar();}
+  else{window.addEventListener('load',iniciar);}
 })();
 </script>
 <style>
