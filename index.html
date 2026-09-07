@@ -174,8 +174,9 @@ img{max-width:100%;display:block}
 .carousel-section{position:relative;display:block;width:100%;height:auto;min-height:0;margin:0;padding:0;overflow:hidden}
 .carousel-section-one{margin-bottom:20px} /* espaçamento vertical entre os dois carrosséis */
 .carousel-section-two{margin-top:0}
-.hcarousel{position:relative;width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.carousel-track{display:flex;width:max-content;gap:16px}
+.hcarousel{position:relative;width:100%;overflow:hidden;transform:translateZ(0);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.carousel-track{display:flex;width:max-content;gap:16px;will-change:transform}
+.carousel-one .carousel-track,.carousel-two .carousel-track{animation-play-state:running !important}
 .carousel-group{display:flex;gap:16px;flex:0 0 auto}
 .carousel-item{flex:0 0 auto}
 .carousel-img{display:block;height:380px;width:auto;border-radius:16px;box-shadow:0 10px 28px rgba(65,40,24,.10);background:var(--surface);transform:translateZ(0)}
