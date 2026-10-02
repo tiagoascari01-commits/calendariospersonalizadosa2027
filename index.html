@@ -635,7 +635,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li class="no"><i class="fa-solid fa-xmark"></i>Sin bonos incluidos</li>
           <li class="no"><i class="fa-solid fa-xmark"></i>Sin actualizaciones</li>
         </ul>
-        <button class="btn" id="btn-basico" data-checkout="https://pay.hotmart.com/J106734432Y?off=yzzcpvzz"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Básico</button>
+        <button class="btn" id="btn-basico" data-checkout="https://pay.hotmart.com/J106734432Y?off=yzzcpvzz&checkoutMode=10"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Básico</button>
         <div class="cta-reforco">
           <div class="rf-line"><i class="fa-solid fa-shield-heart"></i> Garantía de 30 días • Acceso inmediato y digital</div>
           <div class="rf-pay"><i class="fa-brands fa-pix"></i> <i class="fa-solid fa-lock"></i> <span>Tarjeta • Compra 100% segura</span></div>
@@ -668,7 +668,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li><i class="fa-solid fa-gift"></i>500 Moldes de Cajas Escenario</li>
           <li><i class="fa-solid fa-gift"></i>500 Moldes de Fiestas</li>
         </ul>
-        <a class="btn" id="btn-premium" href="https://pay.hotmart.com/J106734432Y?off=dl6sk0fl"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Premium</a>
+        <a class="btn" id="btn-premium" href="https://pay.hotmart.com/J106734432Y?off=dl6sk0fl&checkoutMode=10"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Premium</a>
         <div class="cta-reforco">
           <div class="rf-line"><i class="fa-solid fa-shield-heart"></i> Garantía de 30 días • Acceso inmediato y digital</div>
           <div class="rf-pay"><i class="fa-brands fa-pix"></i> <i class="fa-solid fa-lock"></i> <span>Tarjeta • Compra 100% segura</span></div>
@@ -755,7 +755,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
       <li><i class="fa-solid fa-check"></i>Soporte prioritario e garantia de 30 dias</li>
     </ul>
     <p class="up-save">+ Ahorra US$ 24,00 hoy</p>
-    <a class="btn" href="https://pay.hotmart.com/J106734432Y?off=p881p28k"><i class="fa-solid fa-star"></i>Quiero el completo por US$ 5,90</a>
+    <a class="btn" href="https://pay.hotmart.com/J106734432Y?off=p881p28k&checkoutMode=10"><i class="fa-solid fa-star"></i>Quiero el completo por US$ 5,90</a>
     <button class="decline" id="upsell-decline">No quiero el descuento</button>
   </div>
 </div>
@@ -837,18 +837,42 @@ var overlay=document.getElementById('upsell');
 var basico=document.getElementById('btn-basico');
 var BASICO_CHECKOUT=basico.getAttribute('data-checkout');
 
-// Helper: anexa os parâmetros da URL atual (window.location.search) ao destino
+// ===== Redirecionamentos: sempre via window.location.href + parâmetros da URL =====
+// Junta os parâmetros atuais (window.location.search) ao destino.
+// Mantém os parâmetros próprios do destino (ex.: off= da Hotmart) e não duplica chaves.
 function comParams(url){
   var qs=window.location.search||'';
-  if(!qs)return url;
-  // se o destino já tiver query string, concatena com &, senão com ?
-  return url + (url.indexOf('?')>=0 ? '&' : '?') + qs.substring(1);
+  if(qs.length<2)return url;
+  try{
+    var destino=new URL(url,window.location.href);
+    var chavesDestino={};
+    destino.searchParams.forEach(function(_,k){chavesDestino[k]=true;});
+    new URLSearchParams(qs).forEach(function(v,k){
+      if(!chavesDestino[k])destino.searchParams.append(k,v);
+    });
+    return destino.toString();
+  }catch(err){
+    // fallback para navegadores sem suporte a URL()
+    var hash='',h=url.indexOf('#');
+    if(h>=0){hash=url.substring(h);url=url.substring(0,h);}
+    return url+(url.indexOf('?')>=0?'&':'?')+qs.substring(1)+hash;
+  }
 }
 // Redireciona forçando window.location.href com os parâmetros propagados
 function irPara(url){
+  if(!url)return;
   window.location.href=comParams(url);
 }
+// É redirecionamento para outra página? (ignora âncoras internas como #planos)
+function ehRedirecionamento(href){
+  if(!href)return false;
+  href=href.trim();
+  if(href.charAt(0)==='#')return false;
+  if(/^(javascript:|mailto:|tel:)/i.test(href))return false;
+  return true;
+}
 
+// Botão do Kit Básico abre o upsell
 basico.addEventListener('click',function(e){
   e.preventDefault();
   overlay.classList.add('show');
@@ -859,14 +883,21 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
   irPara(BASICO_CHECKOUT); // checkout do Básico, com parâmetros
 });
 
-// Converte todos os links <a> de checkout para redirecionar via window.location.href com parâmetros
+// Todos os links <a> que levam para outra página (checkout Premium, upsell e qualquer outro)
 (function(){
-  var links=document.querySelectorAll('a.btn[href^="https://pay.hotmart.com"]');
-  links.forEach(function(a){
-    a.addEventListener('click',function(e){
-      e.preventDefault();
-      irPara(a.getAttribute('href'));
-    });
+  // atualiza o href visível também (cobre clique com botão do meio / pressionar e segurar)
+  document.querySelectorAll('a[href]').forEach(function(a){
+    var href=a.getAttribute('href');
+    if(ehRedirecionamento(href))a.setAttribute('href',comParams(href));
+  });
+  // intercepta o clique e redireciona via window.location.href
+  document.addEventListener('click',function(e){
+    var a=e.target.closest?e.target.closest('a[href]'):null;
+    if(!a)return;
+    var href=a.getAttribute('href');
+    if(!ehRedirecionamento(href))return;
+    e.preventDefault();
+    irPara(href);
   });
 })();
 // não fecha ao clicar fora (mantém a conversão)
