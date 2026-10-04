@@ -267,10 +267,10 @@ img{max-width:100%;display:block}
 .bonus-note{text-align:center;color:var(--text-soft);font-size:.9rem;margin-top:24px;max-width:640px;margin-left:auto;margin-right:auto}
 
 /* Plans */
-.plans{display:grid;grid-template-columns:1fr 1.08fr;gap:28px;max-width:920px;margin:0 auto;align-items:center}
+.plans{display:grid;grid-template-columns:minmax(0,760px);justify-content:center;gap:30px;max-width:920px;margin:0 auto;align-items:stretch}
 .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:34px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;position:relative}
-.plan.premium{background:#F4FBF5;border:2px solid var(--green-border);box-shadow:0 16px 38px rgba(54,163,95,.16);transform:scale(1.02)}
-.plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:.72rem;font-weight:800;padding:6px 18px;border-radius:50px;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.plan.premium{background:#F4FBF5;border:3px solid var(--green);box-shadow:0 18px 42px rgba(54,163,95,.24);padding-top:42px;scroll-margin-top:24px}
+.plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:.78rem;font-weight:800;padding:8px 18px;border-radius:50px;text-align:center;max-width:calc(100% - 32px);width:max-content}
 .plan h3{font-size:1.5rem;margin-bottom:4px;text-align:center}
 .plan .plan-highlight{color:var(--text-soft);font-size:.95rem;font-weight:700;margin-bottom:16px;text-align:center}
 .plan .anchor{color:var(--text-soft);font-size:.92rem;margin-bottom:2px;text-align:center}
@@ -282,7 +282,7 @@ img{max-width:100%;display:block}
 .plan ul li{display:flex;gap:10px;align-items:flex-start;font-size:.96rem;margin-bottom:11px;line-height:1.5}
 .plan ul li i.fa-check{color:var(--green);margin-top:4px}
 .plan ul li i.fa-gift{color:var(--green);margin-top:4px}
-.plan ul li.no i{color:#c9b8ab;margin-top:4px}
+.plan ul li.no i{color:#e01e1e;margin-top:4px}
 .plan ul li.no{color:var(--text-soft)}
 .plan .btn{font-size:1.05rem;padding:16px 22px}
 .plan .after-cta{text-align:center;font-size:.82rem;color:var(--coral);font-weight:700;margin-top:10px}
@@ -459,7 +459,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
       <span><i class="fa-solid fa-envelope"></i>Entrega por e-mail</span>
     </div>
     <div class="hero-cta-wrap">
-      <a href="#planos" class="btn"><i class="fa-solid fa-cart-shopping"></i>Quiero mis calendarios 2027</a>
+      <a href="#kit-basico" class="btn"><i class="fa-solid fa-cart-shopping"></i>Quiero mis calendarios 2027</a>
       <p class="microcopy"><i class="fa-solid fa-circle-check"></i> Pago único • <i class="fa-solid fa-circle-check"></i> Acceso inmediato • <i class="fa-solid fa-circle-check"></i> Garantía de 30 días</p>
     </div>
   </div>
@@ -536,7 +536,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 </section>
 
 <!-- CTA antes de Benefícios -->
-<div class="cta-mid" style="padding:0 0 44px"><div class="container"><a href="#planos" class="btn"><i class="fa-solid fa-cart-shopping"></i>Quiero mis calendarios 2027</a></div></div>
+<div class="cta-mid" style="padding:0 0 44px"><div class="container"><a href="#kit-basico" class="btn"><i class="fa-solid fa-cart-shopping"></i>Quiero mis calendarios 2027</a></div></div>
 
 <!-- 5. BENEFÍCIOS -->
 <section class="section">
@@ -623,7 +623,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
     <p class="section-sub">Empieza con lo esencial o aprovecha la colección completa.</p>
     <div class="plans">
       <!-- Básico -->
-      <div class="plan">
+      <div class="plan" id="kit-basico">
         <h3>Kit Básico</h3>
         <p class="plan-highlight">50 modelos de calendarios 2027</p>
         <div class="plan-price">US$ 4,90</div>
@@ -632,25 +632,26 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li><i class="fa-solid fa-check"></i>50 modelos de calendarios 2027</li>
           <li><i class="fa-solid fa-check"></i>Acceso digital inmediato</li>
           <li><i class="fa-solid fa-check"></i>Garantía de 30 días</li>
-          <li class="no"><i class="fa-solid fa-xmark"></i>Sin bonos incluidos</li>
+          <li class="no"><i class="fa-solid fa-xmark"></i>Guía de impresión</li>
+          <li class="no"><i class="fa-solid fa-xmark"></i>Papeles recomendados</li>
+          <li class="no"><i class="fa-solid fa-xmark"></i>Actualizaciones gratis</li>
+          <li class="no"><i class="fa-solid fa-xmark"></i>Calendario de pared A4</li>
           <li class="no"><i class="fa-solid fa-xmark"></i>Sin actualizaciones</li>
         </ul>
         <button class="btn" id="btn-basico" data-checkout="https://pay.hotmart.com/J106734432Y?off=yzzcpvzz&checkoutMode=10"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Básico</button>
         <div class="cta-reforco">
-          <div class="rf-line"><i class="fa-solid fa-shield-heart"></i> Garantía de 30 días • Acceso inmediato y digital</div>
           <div class="rf-pay"><i class="fa-brands fa-pix"></i> <i class="fa-solid fa-lock"></i> <span>Tarjeta • Compra 100% segura</span></div>
         </div>
-        <p class="after-cta">Tenemos una oferta especial para ti</p>
       </div>
       <!-- Premium -->
-      <div class="plan premium">
-        <span class="plan-badge"><i class="fa-solid fa-star"></i> Más vendido</span>
+      <div class="plan premium" id="kit-premium">
+        <span class="plan-badge"><i class="fa-solid fa-star"></i> Tenemos una opción mejor para ti</span>
         <h3>Kit Premium</h3>
         <p class="plan-highlight">150 modelos de calendarios 2027</p>
-        <p class="anchor">Antes <s>US$ 29,90</s> ahora</p>
+        <p class="anchor">Antes <s>US$ 59,90</s> ahora</p>
         <div class="plan-price">US$ 7,90</div>
         <p class="pay">Pago único</p>
-        <span class="save">Ahorras US$ 22,00</span>
+        <span class="save">Ahorras US$ 52,00</span>
         <ul>
           <li><i class="fa-solid fa-check"></i>150 modelos de calendarios 2027</li>
           <li><i class="fa-solid fa-check"></i>Mucha más variedad</li>
@@ -664,13 +665,11 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
           <li><i class="fa-solid fa-gift"></i>Calendarios de pared A4</li>
           <li><i class="fa-solid fa-gift"></i>Actualizaciones incluidas</li>
           <li><i class="fa-solid fa-gift"></i>Soporte prioritario</li>
-          <li><i class="fa-solid fa-gift"></i>500 Artes de Botones Editables</li>
           <li><i class="fa-solid fa-gift"></i>500 Moldes de Cajas Escenario</li>
           <li><i class="fa-solid fa-gift"></i>500 Moldes de Fiestas</li>
         </ul>
         <a class="btn" id="btn-premium" href="https://pay.hotmart.com/J106734432Y?off=dl6sk0fl&checkoutMode=10"><i class="fa-solid fa-cart-shopping"></i>Quiero el Kit Premium</a>
         <div class="cta-reforco">
-          <div class="rf-line"><i class="fa-solid fa-shield-heart"></i> Garantía de 30 días • Acceso inmediato y digital</div>
           <div class="rf-pay"><i class="fa-brands fa-pix"></i> <i class="fa-solid fa-lock"></i> <span>Tarjeta • Compra 100% segura</span></div>
         </div>
       </div>
@@ -712,7 +711,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 <section class="section cta-final">
   <div class="container">
     <div class="hero-cta-wrap">
-      <a href="#planos" class="btn"><i class="fa-solid fa-arrow-down"></i>TIREI MINHAS DÚVIDAS!</a>
+      <a href="#kit-basico" class="btn"><i class="fa-solid fa-arrow-down"></i>TIREI MINHAS DÚVIDAS!</a>
     </div>
   </div>
 </section>
@@ -740,7 +739,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
     <p class="up-sub">¡Tenemos una <strong>OFERTA ESPECIAL</strong> para ti!</p>
     <span class="up-badge">Mejor relación precio-beneficio</span>
     <h3>¡EL COMPLETO VALE MÁS LA PENA!</h3>
-    <p class="up-anchor">Antes US$ 29,90</p>
+    <p class="up-anchor">Antes US$ 59,90</p>
     <div class="up-price">US$ 5,90</div>
     <ul class="up-list">
       <li><i class="fa-solid fa-check"></i>150 modelos de calendarios 2027 (la colección completa)</li>
@@ -754,7 +753,6 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
       <li><i class="fa-solid fa-check"></i>Bono #7 500 Moldes de Fiestas</li>
       <li><i class="fa-solid fa-check"></i>Soporte prioritario e garantia de 30 dias</li>
     </ul>
-    <p class="up-save">+ Ahorra US$ 24,00 hoy</p>
     <a class="btn" href="https://pay.hotmart.com/J106734432Y?off=p881p28k&checkoutMode=10"><i class="fa-solid fa-star"></i>Quiero el completo por US$ 5,90</a>
     <button class="decline" id="upsell-decline">No quiero el descuento</button>
   </div>
