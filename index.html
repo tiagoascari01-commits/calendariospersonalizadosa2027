@@ -31,7 +31,7 @@
     })(window, document, "clarity", "script", "ytogdnxqxn");
 </script>
 <!-- End Microsoft Clarity -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Kit de Calendarios 2027 — Hasta 150 Modelos para Imprimir</title>
 <meta name="description" content="Elige entre 50 o 150 modelos de calendarios 2027 listos para imprimir, montar, regalar o revender. Archivos digitales con acceso inmediato.">
 
@@ -330,7 +330,7 @@ img{max-width:100%;display:block}
 .support i{color:var(--green);font-size:1.6rem;margin-bottom:10px}
 
 /* Footer */
-footer{background:var(--text);color:#F8EEE6;padding:44px 0 92px;text-align:center;font-size:.9rem}
+footer{background:var(--text);color:#F8EEE6;padding:44px 0 calc(40px + env(safe-area-inset-bottom));text-align:center;font-size:.9rem}
 footer .flinks{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
 footer a{color:#F8EEE6;text-decoration:none;opacity:.88}
 footer a:hover{opacity:1;text-decoration:underline}
@@ -490,6 +490,17 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
   .plan-basico .cta-reforco{margin-top:8px}
 }
 @media(prefers-reduced-motion:reduce){.plan.premium{animation:none}}
+</style>
+<style>
+/* Página termina no rodapé: sem faixa clara e sem "puxar" além do fim */
+html{background:#35231B;overscroll-behavior-y:none}
+body{overscroll-behavior-y:none}
+noscript img{display:none!important}
+</style>
+<style>
+/* Bloqueio de seleção/cópia e arrastar imagens */
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none}
+img{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -978,22 +989,37 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
 <script>
 (function(){
 
+  // 1. Bloqueia menu do botão direito / toque longo (onde ficam "Inspecionar" e "Copiar")
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+
   // 2. Bloqueia arrastar imagens/elementos
   document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
+  document.querySelectorAll('img').forEach(function(i){i.setAttribute('draggable','false');});
+  new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){
+    if(n.tagName==='IMG')n.setAttribute('draggable','false');
+    else if(n.querySelectorAll)n.querySelectorAll('img').forEach(function(i){i.setAttribute('draggable','false');});
+  });});}).observe(document.documentElement,{childList:true,subtree:true});
 
+  // 3. Bloqueia seleção e cópia de texto
+  document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+  ['copy','cut'].forEach(function(ev){document.addEventListener(ev,function(e){
+    e.preventDefault();try{e.clipboardData&&e.clipboardData.setData('text/plain','');}catch(x){}return false;
+  });});
 
-  // 4. Bloqueia atalhos de DevTools / copiar / ver código
+  // 4. Bloqueia atalhos de DevTools / inspecionar / copiar / ver código
   document.addEventListener('keydown',function(e){
-    var k=e.keyCode||e.which;
+    var k=e.keyCode||e.which, mod=e.ctrlKey||e.metaKey;
     // F12
-    if(k===123){e.preventDefault();return false;}
-    // Ctrl/Cmd + Shift + I/J/C  (DevTools/console/inspetor)
-    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(k===73||k===74||k===67)){e.preventDefault();return false;}
-    // Ctrl/Cmd + U (ver código-fonte)
-    if((e.ctrlKey||e.metaKey)&&k===85){e.preventDefault();return false;}
+    if(k===123){e.preventDefault();e.stopPropagation();return false;}
+    // Ctrl+Shift+I/J/C/K (Windows/Linux) e Cmd+Option+I/J/C (Mac)
+    if(mod&&(e.shiftKey||e.altKey)&&(k===73||k===74||k===67||k===75)){e.preventDefault();e.stopPropagation();return false;}
+    // Ctrl/Cmd + U (ver código-fonte) e Cmd+Option+U (Mac)
+    if(mod&&k===85){e.preventDefault();return false;}
     // Ctrl/Cmd + S (salvar página)
-    if((e.ctrlKey||e.metaKey)&&k===83){e.preventDefault();return false;}
-  });
+    if(mod&&k===83){e.preventDefault();return false;}
+    // Ctrl/Cmd + C / X / A (copiar / recortar / selecionar tudo)
+    if(mod&&!e.shiftKey&&(k===67||k===88||k===65)){e.preventDefault();return false;}
+  },true);
 
   // 5. Bloqueia zoom por duplo-toque no mobile
   var lastTouch=0;
