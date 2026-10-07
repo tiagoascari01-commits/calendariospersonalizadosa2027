@@ -1148,11 +1148,14 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
   }
   ['pointerup','touchend','click','keydown'].forEach(function(ev){document.addEventListener(ev,toqueReal,{capture:true,passive:true});});
 
-  // 3) Cada toque em VOLTAR abre o popup e bloqueia a saída de novo
+  // 3) VOLTAR fica bloqueado; o popup abre no 2º toque em voltar (o 1º só segura a pessoa na página)
+  var toquesVoltar=0;
   window.addEventListener('popstate',function(){
     if(!armado||saindo||desligado)return;
-    abrir();
     empilhar();
+    if(popup.classList.contains('show'))return;   // popup já aberto: só mantém bloqueado
+    toquesVoltar++;
+    if(toquesVoltar>=2){toquesVoltar=0;abrir();}
   });
 
   // Links de âncora (#planos): rolam sem criar histórico, para não disparar o popup ao voltar
