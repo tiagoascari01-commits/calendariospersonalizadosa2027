@@ -492,7 +492,7 @@ img{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-dra
 </style>
 </head>
 <body>
-<div class="notif-stack" id="notifStack" aria-live="polite" aria-label="Compras recientes"><div class="purchase-notif show"><div class="pn-icon"><i class="fa-solid fa-bag-shopping"></i></div><div class="pn-text"><p class="pn-name">Josefina <span>acaba de comprar</span></p><p class="pn-line"><span class="pn-kit">Kit Premium</span><span class="pn-time"> · hace 34 minutos</span></p></div></div></div>
+<div class="notif-stack" id="notifStack" aria-live="polite" aria-label="Compras recientes"></div>
 
 <!-- 1. URGÊNCIA -->
 <div class="urgency"><i class="fa-solid fa-fire"></i> OFERTA SOLO HOY <span id="hoje">08/10/2026</span></div>
@@ -952,7 +952,7 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
 (function(){
   var stack=document.getElementById('notifStack');
   if(!stack)return;
-  var nomes=['María','Camila','Valentina','Sofía','Daniela','Gabriela','Luciana','Fernanda','Mariana','Andrea','Paola','Carolina','Lucía','Ximena','Antonella','Valeria','Natalia','Alejandra','Catalina','Isabella','Florencia','Rocío','Micaela','Agustina','Josefina','Guadalupe','Renata','Martina','Julieta','Victoria'];
+  var nomes=['María','Camila','Valentina','Sofía','Daniela','Gabriela','Luciana','Fernanda','Mariana','Andrea','Paola','Carolina','Lucía','Ximena','Antonella','Valeria','Natalia','Alejandra','Catalina','Isabella','Florencia','Rocío','Micaela','Agustina','Guadalupe','Renata','Martina','Julieta','Victoria'];
   // embaralha os nomes (Fisher-Yates) para não repetir
   for(var i=nomes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=nomes[i];nomes[i]=nomes[j];nomes[j]=t;}
   var nomeIdx=0;
