@@ -1125,29 +1125,34 @@ document.getElementById('upsell-decline').addEventListener('click',function(){
   var forcar=params.get('exit')==='1';          // ?exit=1 abre o popup direto (teste)
   var desligado=params.get('exit')==='0';       // ?exit=0 desativa
   var ehMobile=window.matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-  var armado=false, jaMostrou=false, saindo=false;
+  var armado=false, armadoComToque=false, saindo=false;
 
   function abrir(){
-    if(jaMostrou)return;
-    jaMostrou=true;
     var up=document.getElementById('upsell'); if(up)up.classList.remove('show');
     popup.classList.add('show');
   }
   function fechar(){popup.classList.remove('show');}
+  function empilhar(){try{history.pushState({exitPopup:Date.now()},'');}catch(e){}}
 
-  // "Arma" o voltar só depois da 1ª interação (o Chrome ignora entradas de histórico criadas sem interação)
-  function armar(){
-    if(armado||desligado||!ehMobile)return;
-    armado=true;
-    try{history.pushState({exitPopup:true},'');}catch(e){}
-    ['touchend','click','keydown'].forEach(function(ev){document.removeEventListener(ev,armar,true);});
+  // 1) Arma o voltar assim que a página abre (Safari/iPhone e navegadores sem a proteção do Chrome)
+  if(ehMobile&&!desligado){empilhar();armado=true;}
+
+  // 2) Chrome/Android ignora entradas criadas sem toque real: rearma no 1º toque de verdade
+  function toqueReal(){
+    if(armadoComToque||desligado||!ehMobile||saindo)return;
+    var ativo=!navigator.userActivation||navigator.userActivation.isActive;
+    if(!ativo)return;               // rolagem não conta como toque; espera um toque real
+    armadoComToque=true; armado=true;
+    empilhar();
+    ['pointerup','touchend','click','keydown'].forEach(function(ev){document.removeEventListener(ev,toqueReal,true);});
   }
-  ['touchend','click','keydown'].forEach(function(ev){document.addEventListener(ev,armar,{capture:true,passive:true});});
+  ['pointerup','touchend','click','keydown'].forEach(function(ev){document.addEventListener(ev,toqueReal,{capture:true,passive:true});});
 
+  // 3) Cada toque em VOLTAR abre o popup e bloqueia a saída de novo
   window.addEventListener('popstate',function(){
-    if(!armado||saindo)return;
-    if(jaMostrou){return;}   // 2º voltar: deixa sair normalmente
+    if(!armado||saindo||desligado)return;
     abrir();
+    empilhar();
   });
 
   // Links de âncora (#planos): rolam sem criar histórico, para não disparar o popup ao voltar
