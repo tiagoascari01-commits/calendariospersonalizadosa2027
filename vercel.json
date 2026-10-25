@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!404\\.html).*)",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "BR" }],
+      "destination": "/404.html"
+    }
+  ]
+}
